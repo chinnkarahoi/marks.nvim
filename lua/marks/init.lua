@@ -12,7 +12,7 @@ function M.set()
   end
 
   if utils.is_valid_mark(input) then
-    if not M.excluded_fts[vim.bo.ft] then
+    if vim.bo.buflisted and not M.excluded_fts[vim.bo.ft] then
       M.mark_state:place_mark_cursor(input)
     end
     vim.cmd("normal! m" .. input)
@@ -20,13 +20,13 @@ function M.set()
 end
 
 function M.set_next()
-  if not M.excluded_fts[vim.bo.ft] then
+  if vim.bo.buflisted and not M.excluded_fts[vim.bo.ft] then
     M.mark_state:place_next_mark_cursor()
   end
 end
 
 function M.toggle()
-  if not M.excluded_fts[vim.bo.ft] then
+  if vim.bo.buflisted and not M.excluded_fts[vim.bo.ft] then
     M.mark_state:toggle_mark_cursor()
   end
 end
@@ -70,7 +70,7 @@ function M.annotate()
 end
 
 function M.refresh(force_reregister)
-  if M.excluded_fts[vim.bo.ft] then
+  if not vim.bo.buflisted or M.excluded_fts[vim.bo.ft] then
     return
   end
 
